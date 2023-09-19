@@ -1,0 +1,48 @@
+---
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import LineItem from '../components/HomepageLineItem.astro';
+import { contentfulClient } from "../lib/contentful";
+import type { HomepageLineItem } from "../models/HomepageLineItem.ts"
+
+const entries = await contentfulClient.getEntries<HomepageLineItem>({
+  content_type: "homepageLineItem",
+	order: "fields.ordering,-fields.eventDate,-sys.createdAt",
+});
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>C³ Work Service</title>
+		<style>
+			h1 {
+				text-align: center;
+			}
+		</style>
+		<style is:global>
+			body {
+				font-family: sans-serif;
+			}
+			blockquote {
+				white-space: pre;
+				font-style: italic;
+				line-height: 1.5em;
+			}
+		</style>
+	</head>
+	<body>
+		  {entries.items.map((item) => (
+				<LineItem lineItem={item}>
+					<div
+						set:html={item.fields.richText ? documentToHtmlString(item.fields.richText) : item.fields.name}
+					></div>
+					{item.fields.eventDate && 
+						<div class="date">{item.fields.eventDate}</div>
+					}
+				</LineItem>
+			))}
+	</body>
+</html>

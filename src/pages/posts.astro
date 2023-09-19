@@ -1,0 +1,36 @@
+---
+import { contentfulClient } from "../lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { EntryFieldTypes } from "contentful";
+
+interface Article {
+  contentTypeId: "article",
+  fields: {
+    title: EntryFieldTypes.Text
+    body: EntryFieldTypes.RichText,
+  }
+}
+
+const entries = await contentfulClient.getEntries<Article>({
+  content_type: "article",
+});
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>C³ Work Service – Writings</title>
+	</head>
+	<body>
+		<h1>C³ Work Service</h1>
+		  {entries.items.map((item) => (
+				<section>
+					<h2>{item.fields.title}</h2>
+					<article set:html={documentToHtmlString(item.fields.body)}></article>
+				</section>
+			))}
+	</body>
+</html>

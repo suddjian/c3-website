@@ -1,0 +1,22 @@
+---
+import type { HomepageLineItem } from "../models/HomepageLineItem.ts"
+
+const { lineItem }: { lineItem: HompageLineItem } = Astro.props;
+---
+<style>
+.homepageLineItem {
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  margin: 8px;
+}
+a.homepageLineItem {
+  border: 1px solid lightgray;
+  display: block;
+}
+</style>
+{lineItem.fields.linkToUrl ?
+  <a href={lineItem.fields.linkToUrl} class="homepageLineItem"><slot /></a>
+  :
+  <div class="homepageLineItem"><slot /></div>
+}
