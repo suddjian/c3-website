@@ -2,6 +2,7 @@
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import GlobalStyles from '../components/GlobalStyles.astro';
 import LineItem from '../components/HomepageLineItem.astro';
+import PageWrapper from '../components/PageWrapper.astro';
 import { contentfulClient, HomepageLineItem } from "../lib/contentful";
 
 const entries = await contentfulClient.getEntries<HomepageLineItem>({
@@ -26,6 +27,7 @@ const entries = await contentfulClient.getEntries<HomepageLineItem>({
 		</style>
 	</head>
 	<body>
+		<PageWrapper>
 		  {entries.items.map((item) => (
 				<LineItem lineItem={item}>
 					<div
@@ -36,5 +38,6 @@ const entries = await contentfulClient.getEntries<HomepageLineItem>({
 					}
 				</LineItem>
 			))}
+		</PageWrapper>
 	</body>
 </html>

@@ -2,6 +2,7 @@
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { EntryFieldTypes } from "contentful";
 import GlobalStyles from '../../components/GlobalStyles.astro';
+import PageWrapper from '../../components/PageWrapper.astro';
 import { contentfulClient, Article } from "../../lib/contentful";
 
 export async function getStaticPaths() {
@@ -33,7 +34,9 @@ const { title, body } = Astro.props;
     <GlobalStyles />
 	</head>
 	<body>
-		<h1>{title}</h1>
-		<article set:html={body}></article>
+    <PageWrapper>
+      <h1>{title}</h1>
+      <article set:html={body}></article>
+    </PageWrapper>
 	</body>
 </html>

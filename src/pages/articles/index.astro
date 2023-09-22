@@ -2,6 +2,7 @@
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { EntryFieldTypes } from "contentful";
 import GlobalStyles from '../../components/GlobalStyles.astro';
+import PageWrapper from '../../components/PageWrapper.astro';
 import { contentfulClient, Article } from "../../lib/contentful";
 
 const entries = await contentfulClient.getEntries<Article>({
@@ -19,12 +20,14 @@ const entries = await contentfulClient.getEntries<Article>({
 		<GlobalStyles />
 	</head>
 	<body>
-		<h1>C³ Work Service</h1>
-		  {entries.items.map((item) => (
+		<PageWrapper>
+			<h1>C³ Work Service</h1>
+			{entries.items.map((item) => (
 				<section>
 					<h2><a href={`/articles/${item.fields.urlSlug}`}>{item.fields.title}</a></h2>
 					<!-- <article set:html={documentToHtmlString(item.fields.body)}></article> -->
 				</section>
 			))}
+		</PageWrapper>
 	</body>
 </html>
