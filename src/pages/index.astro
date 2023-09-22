@@ -1,12 +1,13 @@
 ---
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import GlobalStyles from '../components/GlobalStyles.astro';
 import LineItem from '../components/HomepageLineItem.astro';
-import { contentfulClient } from "../lib/contentful";
-import type { HomepageLineItem } from "../models/HomepageLineItem.ts"
+import { contentfulClient, HomepageLineItem } from "../lib/contentful";
 
 const entries = await contentfulClient.getEntries<HomepageLineItem>({
   content_type: "homepageLineItem",
 	order: "fields.ordering,-fields.eventDate,-sys.createdAt",
+	include: 10,
 });
 ---
 
@@ -16,20 +17,11 @@ const entries = await contentfulClient.getEntries<HomepageLineItem>({
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>C³ Work Service</title>
+		<title>C³ Work/Service</title>
+		<GlobalStyles />
 		<style>
 			h1 {
 				text-align: center;
-			}
-		</style>
-		<style is:global>
-			body {
-				font-family: sans-serif;
-			}
-			blockquote {
-				white-space: pre;
-				font-style: italic;
-				line-height: 1.5em;
 			}
 		</style>
 	</head>

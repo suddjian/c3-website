@@ -1,0 +1,39 @@
+---
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { EntryFieldTypes } from "contentful";
+import GlobalStyles from '../../components/GlobalStyles.astro';
+import { contentfulClient, Article } from "../../lib/contentful";
+
+export async function getStaticPaths() {
+  const { items } = await contentfulClient.getEntries<Article>({
+    content_type: "article",
+    include: 10,
+    order: "-sys.publishedAt",
+  });
+  const pages = items.map((item) => ({
+    params: { slug: item.fields.urlSlug },
+    props: {
+      title: item.fields.title,
+      body: documentToHtmlString(item.fields.body),
+    },
+  }));
+  return pages;
+}
+
+const { title, body } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>C³ – {title}</title>
+    <GlobalStyles />
+	</head>
+	<body>
+		<h1>{title}</h1>
+		<article set:html={body}></article>
+	</body>
+</html>
