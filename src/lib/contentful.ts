@@ -19,9 +19,15 @@ const settings = {
       : 'cdn.contentful.com',
 };
 
-console.log(settings);
-
 export const contentfulClient = contentful.createClient(settings);
+
+export function getUrlForContent(content: any) {
+  if (!content) return null;
+  switch (content.sys.contentType.sys.id) {
+    case 'article':
+      return `/articles/${content.fields.urlSlug}`;
+  }
+}
 
 export interface Article {
   contentTypeId: 'article';

@@ -1,7 +1,11 @@
 ---
-import type { HomepageLineItem } from "../models/HomepageLineItem.ts"
+import { getUrlForContent } from "../lib/contentful.ts"
+import type { HomepageLineItem } from "../lib/contentful.ts"
 
 const { lineItem }: { lineItem: HompageLineItem } = Astro.props;
+
+const href = lineItem.fields.linkToUrl ? lineItem.fields.linkToUrl : getUrlForContent(lineItem.fields.linkToArticle);
+  
 ---
 <style>
 .homepageLineItem {
@@ -15,8 +19,9 @@ a.homepageLineItem {
   display: block;
 }
 </style>
-{lineItem.fields.linkToUrl ?
-  <a href={lineItem.fields.linkToUrl} class="homepageLineItem"><slot /></a>
+{
+  href ?
+    <a href={href} class="homepageLineItem"><slot /></a>
   :
-  <div class="homepageLineItem"><slot /></div>
+    <div class="homepageLineItem"><slot /></div>
 }
