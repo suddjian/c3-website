@@ -7,13 +7,21 @@ function get_env<K extends keyof ImportMeta['env']>(
   return import.meta.env[name];
 }
 
-export const contentfulClient = contentful.createClient({
+const DEV = get_env('DEV');
+const settings = {
   space: get_env('CONTENTFUL_SPACE_ID'),
-  accessToken: import.meta.env.DEV
+  accessToken: DEV
     ? get_env('CONTENTFUL_PREVIEW_TOKEN')
     : get_env('CONTENTFUL_DELIVERY_TOKEN'),
-  host: import.meta.env.DEV ? 'preview.contentful.com' : 'cdn.contentful.com',
-});
+  host:
+    get_env('CONTENTFUL_HOST') ?? DEV
+      ? 'preview.contentful.com'
+      : 'cdn.contentful.com',
+};
+
+console.log(settings);
+
+export const contentfulClient = contentful.createClient(settings);
 
 export interface Article {
   contentTypeId: 'article';
