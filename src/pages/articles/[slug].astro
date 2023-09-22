@@ -8,7 +8,7 @@ export async function getStaticPaths() {
   const { items } = await contentfulClient.getEntries<Article>({
     content_type: "article",
     include: 10,
-    order: "-sys.publishedAt",
+    order: "-sys.updatedAt",
   });
   const pages = items.map((item) => ({
     params: { slug: item.fields.urlSlug },
